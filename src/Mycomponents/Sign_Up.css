@@ -1,0 +1,21 @@
+#main_container2{
+    width: 61vw;
+    background-image: url(https://images.unsplash.com/photo-1617529497832-5ad49d9b5928?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 44vw;
+    border-radius: 20px;
+    box-shadow: 1px 1px 16px;
+}
+input{
+    text-align: center;
+    opacity: 0.8;
+    border-radius: 40px !important;
+}
+label{
+    color: #ebeb8d;
+}
+
+.form-input{
+    margin:8vw;
+}

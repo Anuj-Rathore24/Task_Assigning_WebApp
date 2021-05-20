@@ -2,6 +2,7 @@ import "./App.css";
 import SignUp from "./Mycomponents/Sign_Up.js";
 import About from "./Mycomponents/About.js";
 import Login from "./Mycomponents/Login.js";
+import Home from "./Mycomponents/home";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
@@ -13,6 +14,9 @@ function App() {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/Home">
+          <Home />
         </Route>
         <Route path="/">
           <SignUp />

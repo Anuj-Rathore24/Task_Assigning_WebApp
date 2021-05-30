@@ -36,7 +36,7 @@ export default function Login() {
               if(verifying_response.status===0){
                 alert(verifying_response.mess)
               }else{
-                window.location.href="http://localhost:3000/Home"
+                (window.user==="user_student"?window.location.href="http://localhost:3000/HomeS":window.location.href = "http://localhost:3000/Home")
               }
             }
           };

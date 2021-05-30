@@ -21,12 +21,12 @@ export default function SignUp() {
         onSubmit={function (e) {
           e.preventDefault();
           var target = e.target;
-          for (var i = 0; i < 5; ++i) {
+          for (var i = 0; i < 4; ++i) {
             if (target.elements[i].value === "") {
               alert("Enter all Credentails");
               break;
             } else {
-              if (i === 4) {
+              if (i === 3) {
                 var sign_up_credentials = {
                   Email: e.target.Email.value,
                   Password: e.target.Password.value,
@@ -45,7 +45,10 @@ export default function SignUp() {
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.send(JSON.stringify(sign_up_credentials));
                 try {
-                  window.location.href = "http://localhost:3000/Home";
+                  console.log("working")
+                  console.log(window.user)
+                  (window.user==="user_student"?window.location.href="http://localhost:3000/HomeS":window.location.href = "http://localhost:3000/Home")
+                  // window.location.href = "http://localhost:3000/Home";
                 } catch (err) {
                   console.log(err);
                 }
@@ -106,6 +109,7 @@ export default function SignUp() {
         <Button variant="primary" type="submit">
           Submit
         </Button>
+        <a href="/login">Login In</a>
       </Form>
     </Container>
   );

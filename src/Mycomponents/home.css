@@ -1,7 +1,81 @@
-.main_columns{
-    height: 80vh;
+.main_columns {
+    height: fit-content;
     margin: 2vh;
-    background-color: #ff9800;
+    background-color: #ece0bc42;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    border-radius: 21px;
+}
+
+.Components_cards {
+    margin-top: 2vh;
+    animation-duration: 0.5s;
+    animation-name: slidein;
+}
+p {
+    font-family: cursive;
+    color: teal;
+}
+
+
+@keyframes slidein {
+    from {
+      margin-bottom: 100%;
+    }
+  
+    to {
+      margin-bottom: 0%;
+    }
+  }
+
+.Navbar {
+    display: flex;
+    border-bottom: 2px solid #b7b7b7;
+}
+
+.card {
+    background-color: #dec29a;
+}
+
+.btn-primary {
+    background-color: #a8544e;
+}
+
+.btn-primary:hover {
+    background-color: #5e0bd7;
+}
+
+h2 {
+    color: #fffdfd;
+    font-family: 'Bad Script', cursive;
+}
+
+h4 {
+    font-family: emoji;
+    font-size: 3vh;
+    color: wheat;
+}
+
+.button_view {
+    font-family: emoji;
+    color: white;
+    background-color: #a8544e;
+    border: none;
+    border-radius: 6px;
+}
+
+.div_para_student {
+    display: flex;
+    width: 23vw;
+    border: 2px solid #d2b6b6;
+    border-radius: 10px;
+    justify-content: center;
+}
+
+
+
+.h5 {
+    font-family: 'Sriracha', cursive;
+    color: #654f4f;
 }

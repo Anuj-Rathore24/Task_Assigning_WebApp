@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const formidable = require("formidable");
+const fs = require("fs");
+let date_ob = new Date();
 
 //cors libarary is for handling security messages from browser(while using xhttp requests)
 app.use(
@@ -55,7 +58,13 @@ app.post("/Sign_Up_Credentials", (req, res) => {
       user_info.userid = req.session.UserId;
       user_info.user = req.session.User;
       complete_user_inforamtion = Credentials;
-      console.log(complete_user_inforamtion);
+      con.query(`select Not_submitted from assignments_table where CLass_Id="${Credentials.extra_info}"`,(err,result)=>{
+        if(err) throw err;
+        console.log(result)
+        // result[0].forEach(element => {
+        //   var old_list=element.Not_submitted
+        // });
+      })
     }
   );
 });
@@ -84,7 +93,6 @@ app.post("/login_Credentials", (req, res) => {
             function (err, result) {
               if (err) throw err;
               complete_user_inforamtion = result[0];
-              console.log(complete_user_inforamtion);
             }
           );
         } else {
@@ -131,9 +139,10 @@ app.post("/Add_Class", (req, res) => {
     }
   );
 });
-var Not_Sub_list;
+var Not_Sub_list='';
 app.post("/Add_Assignment", (req, res) => {
   assignment_req = req.body;
+  console.log(assignment_req.Due_Date)
   res.send();
   function assignment_maker(variable) {
     con.query(
@@ -148,7 +157,9 @@ app.post("/Add_Assignment", (req, res) => {
     `select Student_List from classes_table where Class_Id="${assignment_req.Class_ID}"`,
     async (err, result) => {
       if (err) throw err;
-      Not_Sub_list = result[0].Student_List;
+      if(Not_Sub_list){
+        Not_Sub_list = result[0].Student_List;
+      }
       assignment_maker(Not_Sub_list);
     }
   );
@@ -225,16 +236,22 @@ app.post("/Add_Class_Student", (req, res) => {
       if (err) throw err;
       var previous_classes = result[0].Class_Enrolled;
       previous_classes += "," + body.Class_Id;
-      con.query(`select Not_submitted from assignments_table where Class_Id="${body.Class_Id}"`,(err,result)=>{
-        if(err) throw err;
-        result.forEach(element => {
-          var previous_student_list=element.Not_submitted
-          previous_student_list+=`,${user_info.userid}`
-          con.query(`update assignments_table set Not_submitted="${previous_student_list}" where Not_submitted="${element.Not_submitted}" and Class_Id="${body.Class_Id}"`,(err,result)=>{
-            if(err) throw err;
-          })
-        });
-      })
+      con.query(
+        `select Not_submitted from assignments_table where Class_Id="${body.Class_Id}"`,
+        (err, result) => {
+          if (err) throw err;
+          result.forEach((element) => {
+            var previous_student_list = element.Not_submitted;
+            previous_student_list += `,${user_info.userid}`;
+            con.query(
+              `update assignments_table set Not_submitted="${previous_student_list}" where Not_submitted="${element.Not_submitted}" and Class_Id="${body.Class_Id}"`,
+              (err, result) => {
+                if (err) throw err;
+              }
+            );
+          });
+        }
+      );
       con.query(
         `update user_student set Class_Enrolled="${previous_classes}" where Email="${user_info.userid}"`,
         (err, result) => {
@@ -244,6 +261,56 @@ app.post("/Add_Class_Student", (req, res) => {
       );
     }
   );
+});
+var newpath = "";
+app.post(
+  "/submit_user_assignment",
+  (req, res) => {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+      var oldpath = files.filetoupload.path;
+      newpath = "src/Mycomponents/files_folder/" + files.filetoupload.name;
+      fs.rename(oldpath, newpath, function (err) {
+        if (err) throw err;
+        res.send("Your Assignment was Successfully Submitted");
+      });
+    });
+    con.query(`select Not_submitted from assignments_table where Class_Id="${C_Id}" and discription="${DESC}"`,(err,result)=>{
+      if(err) throw err;
+      var old_list=result[0].Not_submitted.split(",")
+      var new_list=''
+      old_list.forEach(element => {
+        if(element!=user_info.userid){
+          new_list+=","+element
+        }
+      });
+      con.query(`update assignments_table set Not_submitted="${new_list.slice(1,)}" where Class_Id="${C_Id}" and discription="${DESC}"`,(err,result)=>{
+        if(err) throw err;
+      })
+    con.query(`select Ontime_list from assignments_table where Class_Id="${C_Id}" and discription="${DESC}"`,(err,result)=>{
+      if(err) throw err;
+      var O_list=result[0].Ontime_list
+      O_list+=","+user_info.userid+"$"+current_date+"$"+newpath
+      con.query(`update assignments_table set Ontime_list="${O_list}" where Class_Id="${C_Id}" and discription="${DESC}"`,(err,result)=>{
+        if(err) throw err;
+      })
+    })
+    })
+  }
+  
+);
+var current_date;
+var C_Id
+var DESC
+app.post("/submit_user_assignment2", (req, res) => {
+  body = req.body;
+  C_Id=body.Class_Id
+  DESC=body.DESC
+  let year = date_ob.getFullYear();
+  let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+  let date = ("0" + date_ob.getDate()).slice(-2);
+  current_date = year + "-" + month + "-" + date;
+  res.send("done");
 });
 
 const PORT = process.env.PORT || 8080;

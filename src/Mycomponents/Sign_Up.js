@@ -8,7 +8,7 @@ export default function SignUp() {
     <Container id="main_container2" className="mt-3 p-5 pt-5">
       <h1
         style={{
-          color: "white",
+          color: "#6f5050",
           position: "Fixed",
           right: "45.7vw",
           fontFamily: "cursive",

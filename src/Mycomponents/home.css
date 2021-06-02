@@ -32,6 +32,7 @@ p {
 .Navbar {
     display: flex;
     border-bottom: 2px solid #b7b7b7;
+    justify-content: space-between;
 }
 
 .card {

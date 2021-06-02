@@ -1,6 +1,6 @@
 #main_container{
     width: 61vw;
-    background-image: url(https://images.unsplash.com/photo-1443188631128-a1b6b1c5c207?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=889&q=80);
+    background-image: url(https://images.unsplash.com/photo-1535982330050-f1c2fb79ff78?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1334&q=80);
     background-repeat: no-repeat;
     background-size: cover;
     height: 44vw;
@@ -14,7 +14,8 @@ input{
     border-radius: 40px !important;
 }
 label{
-    color: #ebeb8d;
+    color: #54403a;
+    font-weight: bold;
 }
 
 form{

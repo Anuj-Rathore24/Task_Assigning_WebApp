@@ -11,6 +11,8 @@ import {
 } from "react-bootstrap";
 import Component1 from "./HomeComponent1.js";
 import Component2 from "./HomeComponent2.js";
+import accountIcon from "../Mycomponents/files_folder/black-24dp/2x/outline_account_circle_black_24dp.png";
+// import { response } from "express";
 const axios = require("axios").default;
 
 export default class HomeS extends Component {
@@ -19,6 +21,7 @@ export default class HomeS extends Component {
     this.state = {
       ClassData: [],
       AssignmentData: [],
+      UserInfo: [],
     };
   }
   componentDidMount() {
@@ -30,31 +33,53 @@ export default class HomeS extends Component {
         });
       }.bind(this)
     );
+    axios.post("http://localhost:8080/user_information_home").then(
+      function (response) {
+        this.setState({
+          UserInfo: response.data,
+        });
+      }.bind(this)
+    );
   }
   render() {
+    const form_submit=()=>{
+      axios.post("/submit_user_assignment2",{Class_Id:window.class_selected_Id,DESC:window.current_descrpition}).then(function(response){
+        console.log(response)
+      })
+    }
     const show_status = (DESC) => {
+      window.current_descrpition=DESC
       axios
-        .post("http://localhost:8080/Checking_assignment_status", {
-          Class_ID_req: window.class_selected_Id,
-          DESC: DESC,
-        }, {withCredentials:true})
+        .post(
+          "http://localhost:8080/Checking_assignment_status",
+          {
+            Class_ID_req: window.class_selected_Id,
+            DESC: DESC,
+          },
+          { withCredentials: true }
+        )
         .then(function (response) {
           document.getElementById("Heading").innerHTML = response.data.Status_A;
           var para_assi = document.getElementById("Assignment_para");
           if (response.data.Status_A !== "Not Submitted") {
-            para_assi.innerHTML = `Time: ${response.data.data[1]} <br> <button class="button_view">view</button>`;
+            para_assi.innerHTML = `Time: ${response.data.data[1]} <br> <button class="button_view">View</button>`;
           } else {
-            para_assi.innerHTML = `<button class="button_view">Submit Assigment</button>`;
+            para_assi.innerHTML = `<form style='margin:0px; margin-top:0px;' action='submit_user_assignment' method='post' enctype="multipart/form-data"><input name='filetoupload' type="file" id='view_button'></input><input id='form_id' type='submit'></input></form>`;
+            document.getElementById('form_id').onclick=form_submit
           }
         });
     };
     const assignment_api = (ID) => {
       window.class_selected_Id = ID;
       axios
-        .post("http://localhost:8080/testing_assignment", { Class_ID_req: ID }, {withCredentials:true})
+        .post(
+          "http://localhost:8080/testing_assignment",
+          { Class_ID_req: ID },
+          { withCredentials: true }
+        )
         .then(
           function (response) {
-            console.log(response)
+            console.log(response);
             this.setState({
               AssignmentData: response.data,
             });
@@ -66,10 +91,12 @@ export default class HomeS extends Component {
     const handleShow = () => this.setState({ show: true });
     return (
       <div>
-        <Navbar className="Navbar"
-          variant="dark"
-        >
+        <Navbar className="Navbar" variant="dark">
           <Navbar.Brand>App's Name</Navbar.Brand>
+          <Navbar.Brand>
+            {this.state.UserInfo.First_Name} {this.state.UserInfo.Last_Name}
+          </Navbar.Brand>
+          <img src={accountIcon}></img>
         </Navbar>
         <Container>
           <Row>
@@ -103,7 +130,7 @@ export default class HomeS extends Component {
         </Container>
         <Modal show={this.state.show} onHide={handleClose} keyboard={false}>
           <Modal.Header closeButton>
-            <Modal.Title>Add Class</Modal.Title>
+            <Modal.Title>Join Class</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form
@@ -112,7 +139,11 @@ export default class HomeS extends Component {
                 e.preventDefault();
                 console.log(e.target.Class_Id.value);
                 axios
-                  .post("/Add_Class_Student", { Class_Id: e.target.Class_Id.value }, {withCredentials:true})
+                  .post(
+                    "/Add_Class_Student",
+                    { Class_Id: e.target.Class_Id.value },
+                    { withCredentials: true }
+                  )
                   .then(() => {
                     window.location.reload();
                     console.log("page_reloaded");

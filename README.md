@@ -1,15 +1,15 @@
 # Task Assigning WebApp
+### A React Based Web-Application...
 ![Films   TV 21-07-2021 20_11_27](https://user-images.githubusercontent.com/80690679/126507974-4bcc0e7d-55ba-4cdb-bfdc-cc31a709fe60.png)
 > Teachers can see and create multiple classes and assignments...
 
-> each time a class is created they are given a unique id which is used in various backend process
+> Each time a class is created they are given a unique id which is used in various backend process.
 > They can also see progress details of each student 
 
-> Students will be able to join classes(using thier unique id) and access assignments assigned for each individual classes….they will also be able to see their progress
-## A React Based Web-Application...
-> To access the database info we have used proxyservers(back-end)...
+> Students will be able to join classes(using thier unique id) and access assignments assigned for each individual class….they will also be able to see their progress
 
 ### The libraries used for the backend were...
+> To access the database info we have used proxyservers(back-end)...
 
 
 ![server js - Task_Assigning_WebApp - Visual Studio Code 21-07-2021 20_03_52](https://user-images.githubusercontent.com/80690679/126506860-89cfa722-cb97-40da-a6f7-a5a956bf1092.png)
